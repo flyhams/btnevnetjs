@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Event Delegation</title>
+	<style>
+		body {
+			display: flex;
+			height:100vh;
+			align-items: center;
+			justify-content: center;								
+		}
+		
+		.menu {
+			display: flex;
+			/*margin-top: -10vh;*/
+			padding: 2em;
+			border-radius: 20px;
+			background: #eee;
+			/*align-items: center*/
+		}
+		.menu-btn {
+			display: inline-flex;
+			align-items: center;
+			margin: 0 1em;
+			padding: 0.5em 1em 0.5em 0.5em;
+			border: 5px solid white;
+			border-radius: 20px;
+			outline: 0;
+			font: 900 1.2rem NotoSans;
+			background-color: green;
+			/*background: linear-gradient(0deg, rgba(223,210,0,1) 0%, rgba(255,240,0,1) 24%, rgba(255,240,0,1) 70%, rgba(255,255,255,1) 100%);*/
+			/*box-shadow: rgba(0,0,0,0.1) 0 0 0 1px inset;*/
+		}
+		.btn-label {
+			color:white;
+			/*text-shadow: rgba(255,255,255,1) 0 1px 0;*/
+			/*pointer-events: none;*/ /*이렇게 하면 클릭 이벤트 안받*/
+		}
+		.icon {
+			width: 60px;
+			/*pointer-events: none;*/
+		}
+	</style>
+</head>
+<body>
+	<div class="menu">
+		<!-- <button class="menu-btn" data-value="1">
+			<span class="btn-label">button1</span>
+		</button>
+		<button class="menu-btn" data-value="2">
+			<span class="btn-label">button2</span>
+		</button>
+		<button class="menu-btn" data-value="3">
+			<span class="btn-label">button3</span>
+		</button> -->
+	</div>
+	<script>
+		const menu = document.querySelector('.menu');
+		function clickHandler(event) {
+			// console.log(event.target.getAttribute('data-value')); // css 활용, 복잡한 구조에서는 스크립트로 사용하는게 좋음.
+
+			// 자바스크립트 활용
+			let elem = event.target;
+			while (!elem.classList.contains('menu-btn')) {
+				elem = elem.parentNode; //부모를 할당  
+				if (elem.nodeName == 'BODY') { // 노드 이름이 body 라면 (더 찾을것이 없으므)
+					elem = null;
+					return;
+				}
+			}
+			console.log(elem.dataset.value);
+		}
+		menu.addEventListener('click', clickHandler);
+		window.addEventListener('click',()=>{
+			const htmlStr = `
+			<button class="menu-btn" data-value="1">
+				<span class="btn-label">button1</span>
+			</button>
+			<button class="menu-btn" data-value="2">
+				<span class="btn-label">button2</span>
+			</button>
+			<button class="menu-btn" data-value="3">
+				<span class="btn-label">button3</span>
+			</button>`;
+			menu.innerHTML = htmlStr;
+		})
+	</script>
+</body>
+</html>
